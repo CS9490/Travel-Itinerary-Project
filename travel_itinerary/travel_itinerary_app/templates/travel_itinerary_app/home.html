@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,27 +17,81 @@
             margin: 0;
             padding: 0;
         }
-
+        /* Styling for the header */
         header {
             background-color: #333;
             color: #fff;
             padding: 10px 0;
             text-align: center;
         }
-
-        /* Navigation styles */
-        nav {
-            background-color: #444;
-            text-align: center;
-            padding: 10px 0;
+        /* Container within the header for alignment and layout purposes */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        nav a {
+        .left-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;  
+        }
+        /* Logo styling in the header */
+        .header-logo {
+            width: 80px;
+            height: auto;
+            margin-right: 20px;  
+        }
+
+        header h1 {
+        margin: 0;  
+        }
+        .plan-trip-link {
             color: #fff;
             text-decoration: none;
-            margin: 0 20px;
-            font-weight: bold;
             transition: color 0.3s;
+        }
+
+        .plan-trip-link:hover {
+            color: #f0f0f0;  
+        }
+
+        .profile-link {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+        }
+        .profile-link:hover {
+            color: #2c4ebd;   
+        }
+        .plan-trip-link-main {
+            color: #0b0101;   
+            text-decoration: none;  /* Removing the underline */
+            transition: color 0.3s;  /* Transition for smooth color change on hover */
+        }
+
+        .plan-trip-link-main:hover {
+            color: #2c4ebd;  /* Lighter shade of white for hover effect */
+        }
+
+        
+        h2 a.plan-trip-link-main {
+            font-weight: inherit;  /*  font weight remains consistent */
+            font-size: inherit;    /*  font size remains consistent */
+        }
+
+ 
+
+        nav a.cta-button {
+            margin-left: 10px;
+            margin-right: 10px;
         }
 
         nav a:hover {
@@ -57,7 +112,7 @@
 
         /* CTA button styles */
         .cta-button {
-            background-color: #007bff;
+            text-decoration: none;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -104,23 +159,27 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to NAwayFarer</h1>
-        <nav>
-           <a href="{% url 'itinerary' %}">Plan Your Trip</a>
-            {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">Profile</a>
-            <a href="{% url 'logout' %}" class="cta-button">Logout</a>
-
-            {% else %}
-            <a href="{% url 'signup' %}" class="cta-button">Sign Up</a>
-            <a href="{% url 'login' %}" class="cta-button">Login</a>
-            {% endif %}
-        </nav>
+        <div class="header-container">
+            <div class="left-section">
+                <img src="{% static 'travel_itinerary_app/image/logo1.png' %}" alt="NAwayFarer Logo" class="header-logo">
+                <h1>Welcome to NAwayFarer</h1>
+            </div>
+            <div class="right-section">
+                <a href="{% url 'itinerary' %}" class="plan-trip-link">Plan Your Trip</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="profile-link">Profile</a>
+                <a href="{% url 'logout' %}" class="cta-button">Logout</a>
+                {% else %}
+                <a href="{% url 'signup' %}" class="cta-button">Sign Up</a>
+                <a href="{% url 'login' %}" class="cta-button">Login</a>
+                {% endif %}
+            </div>
+        </div>
     </header>
 
     <main>
         <section id="plan-your-trip">
-            <h2>Plan Your Trip</h2>
+            <h2><a href="{% url 'itinerary' %}" class="plan-trip-link-main">Plan Your Trip</a></h2>
             <p>Welcome to NAwayFarer! We make planning your dream vacations a breeze. Whether you're looking for a relaxing beach getaway or an adventurous mountain expedition, we've got you covered.</p>
         </section>
 
