@@ -1,5 +1,10 @@
 from django.test import TestCase
 import unittest
+from asgiref.testing import ApplicationCommunicator
+from channels.layers import get_channel_layer
+from channels.testing import ApplicationCommunicator
+from django.contrib.auth import get_user_model
+from channels.db import database_sync_to_async
 from playwright.sync_api import sync_playwright
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -65,37 +70,76 @@ class DatabaseGrab(TestCase):
 # ---------------------------------------------------------
 # TOTAL                                    69      0   100%
 
-
 class PlaywrightAuthenticationTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch()
 
     @classmethod
     def tearDownClass(cls):
-        cls.browser.close()
         cls.playwright.stop()
         super().tearDownClass()
 
-    def test_successful_login(self):
-        page = self.browser.new_page()
-        page.goto("http://127.0.0.1:8000/accounts/login/", timeout = 0)
+    async def asyncSetUp(self):
+        self.browser = self.playwright.chromium.launch()
 
-        page.fill('input[name="username"]', 'dino')
-        page.fill('input[name="password"]', 'Testing1!')
+    async def asyncTearDown(self):
+        await self.browser.close()
 
-        page.click('button[type="submit"]')
+    async def test_successful_login(self):
+        page = await self.browser.new_page()
+        await page.goto("http://127.0.0.1:8000/accounts/login/")
 
-        page.wait_for_selector('img', timeout=5000)
-        User = get_user_model()
+        await page.fill('input[name="username"]', 'dino')
+        await page.fill('input[name="password"]', 'Testing1!')
 
-        page.wait_for_load_state('networkidle')
+        await page.click('button[type="submit"]')
 
-        self.assertEqual(page.url, 'http://127.0.0.1:8000/')
+        await page.wait_for_selector('img', timeout=5000)
+        User = await database_sync_to_async(get_user_model)
 
+        await page.wait_for_load_state('networkidle')
+
+        self.assertEqual(await page.url(), 'http://127.0.0.1:8000/')
 
 if __name__ == '__main__':
     unittest.main()
+
+
+
+
+# class PlaywrightAuthenticationTest(unittest.TestCase):
+
+#     @classmethod
+#     def setUpClass(cls):
+#         super().setUpClass()
+#         cls.playwright = sync_playwright().start()
+#         cls.browser = cls.playwright.chromium.launch()
+
+#     @classmethod
+#     def tearDownClass(cls):
+#         cls.browser.close()
+#         cls.playwright.stop()
+#         super().tearDownClass()
+
+#     def test_successful_login(self):
+#         page = self.browser.new_page()
+#         page.goto("http://127.0.0.1:8000/accounts/login/", timeout = 0)
+
+#         page.fill('input[name="username"]', 'dino')
+#         page.fill('input[name="password"]', 'Testing1!')
+
+#         page.click('button[type="submit"]')
+
+#         page.wait_for_selector('img', timeout=5000)
+#         User = get_user_model()
+
+#         page.wait_for_load_state('networkidle')
+
+#         self.assertEqual(page.url, 'http://127.0.0.1:8000/')
+
+
+# if __name__ == '__main__':
+#     unittest.main()
