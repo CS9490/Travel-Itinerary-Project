@@ -126,3 +126,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "homepage"
 LOGOUT_REDIRECT_URL = "homepage"
 AUTH_USER_MODEL = "accounts.CustomUser"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]

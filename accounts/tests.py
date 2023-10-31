@@ -1,4 +1,7 @@
 from django.test import TestCase
+import unittest
+from playwright.sync_api import sync_playwright
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 
@@ -61,3 +64,38 @@ class DatabaseGrab(TestCase):
 # accounts/views.py                         7      0   100%
 # ---------------------------------------------------------
 # TOTAL                                    69      0   100%
+
+
+class PlaywrightAuthenticationTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.playwright = sync_playwright().start()
+        cls.browser = cls.playwright.chromium.launch()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.browser.close()
+        cls.playwright.stop()
+        super().tearDownClass()
+
+    def test_successful_login(self):
+        page = self.browser.new_page()
+        page.goto("http://127.0.0.1:8000/accounts/login/", timeout = 0)
+
+        page.fill('input[name="username"]', 'dino')
+        page.fill('input[name="password"]', 'Testing1!')
+
+        page.click('button[type="submit"]')
+
+        page.wait_for_selector('img', timeout=5000)
+        User = get_user_model()
+
+        page.wait_for_load_state('networkidle')
+
+        self.assertEqual(page.url, 'http://127.0.0.1:8000/')
+
+
+if __name__ == '__main__':
+    unittest.main()
