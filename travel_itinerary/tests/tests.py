@@ -1,5 +1,5 @@
 
-from .itinerary import Itinerary  # Import the Itinerary class
+from travel_itinerary.travel_itinerary_app.itinerary import Itinerary  # Import the Itinerary class
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User  # Import User model for user creation

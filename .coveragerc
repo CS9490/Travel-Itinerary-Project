@@ -1,0 +1,8 @@
+[run]
+source = travel_itinerary/
+omit =
+    */migrations/*
+    */tests/*
+    manage.py
+    */apps.py
+    */wsgi.py

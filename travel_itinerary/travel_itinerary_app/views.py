@@ -20,11 +20,8 @@ def home(request):
     return render(request, 'travel_itinerary_app/home.html')
 
 
-def signup(request):
-    return render(request, 'travel_itinerary_app/signup.html')
 
-def login_view(request):
-    return render(request, 'travel_itinerary_app/login.html')
+
 
 # @login_required
 # def plan_trip(request):
