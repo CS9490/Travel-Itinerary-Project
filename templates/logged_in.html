@@ -4,16 +4,8 @@
         <title>NAwayfarer</title>
     </head>
     <body>
-        <header>
-        </header>
-    {% if user.is_authenticated %}
         <p>Hello {{ user.username }}! You are logged in!</p>
         <p>This is your bio "{{ user.bio }}!"</p>
         <a href="{% url 'logout' %}">logout</a>
-    {% else %}
-        <p>Hello! You are not logged in.</p>
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Sign Up</a>
-    {% endif %}
     </body>
 </html>
