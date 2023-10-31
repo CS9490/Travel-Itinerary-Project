@@ -2,10 +2,11 @@ name: dino_radoncic_github_action_workflow
 
 
 on:
-  pull_request:
+  push:
+    workflow_dispatch: {}
     branches:
       - main
-    workflow_dispatch:
+    release:
 
 jobs:
   build:
