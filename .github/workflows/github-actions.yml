@@ -40,7 +40,7 @@ jobs:
     - name: End-to-End Test Execution
       run: |
         python3 manage.py test accounts.tests.PlaywrightAuthenticationTest
-
+#comment
     - name: Stop the application
       run: pkill -f "python3 manage.py runserver"
       continue-on-error: true
