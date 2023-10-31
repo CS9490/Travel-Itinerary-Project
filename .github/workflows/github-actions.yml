@@ -15,16 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+    - name: Set up Python 
+      uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
-    
-    - name: Cache pip
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: pip|${{ runner.os }}|${{ matrix.python-version }}|${{ hashFiles('requirements*.txt') }}
+        python-version: 3.11.5
 
     - name: Install dependencies
       run: |
