@@ -12,8 +12,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-#    steps:
-#    - uses: actions/checkout@v2
+    steps:
+    - uses: actions/checkout@v2
 
   test:
     timeout-minutes: 60
@@ -36,35 +36,35 @@ jobs:
         path: playwright-report/
         retention-days: 30
     
-    - name: Set up Python 
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.11.5
+  - name: Set up Python 
+    uses: actions/setup-python@v2
+    with:
+      python-version: 3.11.5
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+  - name: Install dependencies
+    run: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
 
-    - name: Unit and Integration tests
-      run: |
-        python3 manage.py test accounts.tests.AuthenticationUserTests accounts.tests.DatabaseGrab
+  - name: Unit and Integration tests
+    run: |
+      python3 manage.py test accounts.tests.AuthenticationUserTests accounts.tests.DatabaseGrab
 
-    - name: Generate code coverage report
-      run: |
-        pip install coverage
-        coverage run --source='.' manage.py test
-        coverage report
-    
-    - name: Launch the application
-      run: |
-        python3 manage.py runserver &
-    
-    - name: End-to-End Test Execution
-      run: |
-        python3 manage.py test accounts.tests.PlaywrightAuthenticationTest
+  - name: Generate code coverage report
+    run: |
+      pip install coverage
+      coverage run --source='.' manage.py test
+      coverage report
+  
+  - name: Launch the application
+    run: |
+      python3 manage.py runserver &
+  
+  - name: End-to-End Test Execution
+    run: |
+      python3 manage.py test accounts.tests.PlaywrightAuthenticationTest
 
-    - name: Stop the application
-      run: pkill -f "python3 manage.py runserver"
-      continue-on-error: true
+  - name: Stop the application
+    run: pkill -f "python3 manage.py runserver"
+    continue-on-error: true
 
