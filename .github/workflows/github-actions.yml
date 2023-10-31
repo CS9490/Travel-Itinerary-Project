@@ -1,7 +1,7 @@
 name: dino_radoncic_github_action_workflow
 
 on:
-  pull_request:
+  push:
     branches:
       - main
   workflow_dispatch:
