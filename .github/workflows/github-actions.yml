@@ -33,6 +33,7 @@ jobs:
         pip install coverage
         pip install playwright
         pip install channels
+        pip install daphne
         coverage run --source='.' manage.py test
         coverage report
       
