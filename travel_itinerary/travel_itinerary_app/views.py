@@ -1,40 +1,17 @@
-from django.shortcuts import render
-
-# Create your views here.
-# travel_itinerary_app/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from .models import TravelPlan
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
 from .forms import SignupForm, LoginForm
 from django.contrib.auth.decorators import login_required
-
-
-# travel_itinerary_app/views.py
-from django.shortcuts import render
+from .models import Trip, ItineraryItem
 
 def home(request):
     # Your logic for the homepage view
     return render(request, 'travel_itinerary_app/home.html')
 
 
-def signup(request):
-    return render(request, 'travel_itinerary_app/signup.html')
-
-def login_view(request):
-    return render(request, 'travel_itinerary_app/login.html')
-
-# @login_required
-# def plan_trip(request):
-#     # Implement your view logic for planning a trip here
-#     return render(request, 'travel_itinerary_app/plan_trip.html')
-
 @login_required
 def itinerary(request):
     return render(request, 'travel_itinerary_app/itinerary.html')
-
 
 
 def signup(request):
@@ -64,14 +41,13 @@ def login_view(request):
     return render(request, 'travel_itinerary_app/login.html', {'form': form})
 
 
-
-from .models import Trip, ItineraryItem  # Import your models
-
 def profile(request):
+    if not request.user.is_authenticated:
+        return redirect('login')  # Redirect to the login page if the user is not authenticated
+
     user = request.user  # Get the logged-in user
     past_trips = Trip.objects.filter(user=user)
     current_itinerary = ItineraryItem.objects.filter(user=user)
-
     context = {
         'user': user,
         'past_trips': past_trips,
