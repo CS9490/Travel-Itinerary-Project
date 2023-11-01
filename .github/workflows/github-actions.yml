@@ -32,6 +32,7 @@ jobs:
       run: |
         pip install coverage
         pip install playwright
+        pip install channels
         coverage run --source='.' manage.py test
         coverage report
       
