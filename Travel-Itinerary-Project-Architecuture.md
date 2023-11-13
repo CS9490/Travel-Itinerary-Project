@@ -29,3 +29,10 @@ In summary, our application's architecture orchestrates a coordinated flow of in
 ![ER Diagram](er.jpg)
 
 In our travel itinerary application's database model, we have two fundamental entities: 'User Profile' and 'Itinerary.' The 'User Profile' entity represents user information and includes attributes such as 'User ID,' 'Username,' 'Email,' 'Password,' 'First Name,' 'Last Name,' and other user-related details. On the other hand, the 'Itinerary' entity captures data about travel plans, with attributes including 'Itinerary ID,' 'User ID' (as a foreign key referencing 'User Profile'), 'Title,' 'Description,' 'Start Date,' 'End Date,' and additional itinerary-related information. The relationship between these entities is established as a one-to-many relationship, indicating that each user profile can be associated with multiple itineraries. This design allows users to create and manage multiple travel itineraries, with each itinerary linked to a specific user profile through their unique 'User ID.'
+
+
+## 3) Flow Diagram
+
+![Flow Diagram](flow.jpg)
+
+In our travel itinerary application, the process of creating a new itinerary unfolds seamlessly with a series of well-defined steps. It all begins with the user interface, where users initiate the creation of their travel plan. If authentication is required, users are prompted to log in or sign up. Once authenticated, users provide itinerary details, including the title, description, start date, and end date. The system carefully validates this input and ensures its accuracy. The itinerary data is then submitted to the Backend Server, which communicates with External APIs to retrieve real-time flight and hotel information. The Itinerary Generation component constructs a preliminary itinerary based on this data. Users are given the opportunity to review, modify, and confirm their itinerary. Upon confirmation, the finalized itinerary is saved to the database, and a success message is displayed in the user interface. This well-orchestrated flow ensures users can effortlessly create and customize their travel plans with confidence.
