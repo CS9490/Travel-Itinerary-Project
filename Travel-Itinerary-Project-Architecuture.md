@@ -21,3 +21,11 @@ Our web-based travel itinerary application's system architecture is structured t
 - **User Profile:** User Profile management involves the storage and retrieval of user information and itineraries. When users want to view their saved itineraries, the User Profile component retrieves the data from the Database and presents it to the User Interface.
 
 In summary, our application's architecture orchestrates a coordinated flow of information. The User Interface initiates the user journey, Authentication ensures security, the Backend Server manages data transfer and processing, External APIs provide real-time information, and the Database acts as the repository. Itinerary Generation tailors itineraries, and User Profile delivers user-specific data to the UI. This collaborative interaction results in a comprehensive and personalized travel planning experience for our users.
+
+
+
+## 2) Entity Relationship Diagram
+
+![ER Diagram](er.jpg)
+
+In our travel itinerary application's database model, we have two fundamental entities: 'User Profile' and 'Itinerary.' The 'User Profile' entity represents user information and includes attributes such as 'User ID,' 'Username,' 'Email,' 'Password,' 'First Name,' 'Last Name,' and other user-related details. On the other hand, the 'Itinerary' entity captures data about travel plans, with attributes including 'Itinerary ID,' 'User ID' (as a foreign key referencing 'User Profile'), 'Title,' 'Description,' 'Start Date,' 'End Date,' and additional itinerary-related information. The relationship between these entities is established as a one-to-many relationship, indicating that each user profile can be associated with multiple itineraries. This design allows users to create and manage multiple travel itineraries, with each itinerary linked to a specific user profile through their unique 'User ID.'
