@@ -1,0 +1,47 @@
+name: Terraform
+
+on:
+    push: 
+        branches: [ main ]
+        paths:
+            - 'terraform/*'
+            - '.github/workflows/terraform.yaml'
+    pull_request:
+        branches: [ main ]
+        paths:
+            - 'terraform/*'
+            - '.github/workflows/terraform.yaml'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    name: Terraform Actions
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Terraform CLI
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./travel_itinerary/terraform
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./travel_itinerary/terraform
+
+      - name: Terraform Plan
+        if: ${{ github.event_name == 'pull_request' }}
+        working-directory: ./travel_itinerary/terraform   
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve
+        working-directory: ./travel_itinerary/terraform

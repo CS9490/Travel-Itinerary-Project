@@ -1,0 +1,57 @@
+name: Deploy Application
+
+on:
+  workflow_run:
+    workflows: ["CI"]  
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}  
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Install Python dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./travel_itinerary/requirements.txt
+
+      # Build/Package your application
+      - name: Build/Package Application
+        run: zip -r "app_deploy-${{ github.sha }}.zip" ./idea ./terrform ./travel_itinerary
+
+
+      # Upload the packaged application as an artifact
+      - name: Upload application artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: application_artifact
+          path: app_deploy-${{ github.sha }}.zip
+
+      # Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+            aws-access-key-id: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-2  
+
+      # Upload application file to an AWS S3 bucket
+      - name: Upload application file to AWS S3
+        run: aws s3 cp app_deploy-${{ github.sha }}.zip s3://nawayfarer-ishtiaq-khan/
+
+      - name: Create new application version
+        run: |
+            aws elasticbeanstalk create-application-version \
+            --application-name nawayfarer \
+            --source-bundle S3Bucket="nawayfarer-ishtiaq-khan",S3Key="app_deploy-${{ github.sha }}.zip" \
+            --version-label "ver-${{ github.sha }}"
+            
+
+      # Deploy the application to AWS Elastic Beanstalk
+      - name: Deploy application
+        run: aws elasticbeanstalk update-environment --environment-name nawayfarer-environment --version-label "ver-${{ github.sha }}"
