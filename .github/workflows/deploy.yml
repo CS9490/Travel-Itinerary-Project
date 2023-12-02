@@ -1,0 +1,36 @@
+name: deploy
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./travel_itinerary/requirements.txt
+
+      - name: Build binary distribution and upload to artifact
+        run: zip -r "nawayfarer_deploy-${{ github.sha }}.zip" ./travel_itinerary
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Upload application file to AWS S3
+        run: aws s3 cp "nawayfarer_deploy-${{ github.sha }}.zip" s3://cs9490-nawayfarer/nawayfarer_deploy-${{ github.sha }}.zip
+
+      - name: Create new application version
+        run: aws elasticbeanstalk create-application-version --application-name nawayfarer --source-bundle S3Bucket="cs9490-nawayfarer",S3Key="nawayfarer_deploy-${{ github.sha }}.zip" --version-label "ver-${{ github.sha }}" --description "Deploying version ${{ github.sha }}"
+
+      - name: Deploy application
+        run: aws elasticbeanstalk update-environment --environment-name nawayfarer-environment --version-label "ver-${{ github.sha }}"

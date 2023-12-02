@@ -1,0 +1,4 @@
+travel_itinerary/.venv
+.venv
+*.pyc
+**/.terraform/*
