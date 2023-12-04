@@ -1,8 +1,11 @@
 from openai import OpenAI
 import requests
-client = OpenAI()
 import time
 import os
+
+from dotenv import load_dotenv
+load_dotenv()
+client = OpenAI()
 
 def travel_itinerary_creation(starting_location, destination_location, departing_date, returning_date, min_amt, max_amt, travelers):
 
