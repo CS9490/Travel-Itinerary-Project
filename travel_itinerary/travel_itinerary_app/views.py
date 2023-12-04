@@ -84,6 +84,8 @@ def profile(request):
 
     return render(request, 'travel_itinerary_app/profile.html', context)
 
+def ratings(request):
+    return render(request, 'travel_itinerary_app/ratings.html')
 
 def itinerary_form(request):
     if request.method == 'POST':
