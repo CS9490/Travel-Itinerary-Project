@@ -175,6 +175,7 @@
                 <a href="{% url 'itinerary' %}" class="header-link">Plan Your Trip</a>
                 {% if user.is_authenticated %}
                 <a href="{% url 'profile' %}" class="header-link">Profile</a>
+                <a href="{% url 'ratings' %}" class="header-link">Ratings</a>
                 <a href="{% url 'logout' %}" class="header-link">Logout</a>
                 {% else %}
                 <a href="{% url 'signup' %}" class="header-link">Sign Up</a>
