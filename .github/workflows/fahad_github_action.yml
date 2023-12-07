@@ -1,4 +1,4 @@
-name: cristian_statescu_github_action
+name: fahad_github_action
 
 on:
   pull_request:
