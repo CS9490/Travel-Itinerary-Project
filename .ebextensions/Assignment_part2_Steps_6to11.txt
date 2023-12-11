@@ -298,8 +298,9 @@ LOG_DEFAULT_CONF = {
     }
 }
 
+# Step11: Implement code to remove watchtower when running in development or CI.(Lines 302~305)
 if not enable_watchtower:
-    LOG_DEFAULT_CONF['handlers'].pop('watchtower')
+    LOG_DEFAULT_CONF['handlers'].pop('watchtower') 
     LOG_DEFAULT_CONF['loggers']['flask.app']['handlers'].remove('watchtower')
     LOG_DEFAULT_CONF['loggers']['flaskbb']['handlers'].remove('watchtower')
 
