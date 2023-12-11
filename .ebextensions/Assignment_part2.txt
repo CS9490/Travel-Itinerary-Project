@@ -213,7 +213,8 @@ if not os.path.exists(LOG_PATH):
 # CoRise TODO: setup the watchtower logger
 LOG_DEFAULT_CONF = {
 
- #Step 6:    
+ #Step 6, 7, 8, and 9:  
+
     'version': 1,
     'disable_existing_loggers': False,
 
@@ -281,14 +282,16 @@ LOG_DEFAULT_CONF = {
         }
     },
 
+#Step 10:
+
     'loggers': {
         'flask.app': {
-            'handlers': ['infolog', 'errorlog', 'watchtower'],
+            'handlers': ['infolog', 'errorlog', 'watchtower'],  #Watchower already added.
             'level': 'INFO',
             'propagate': True
         },
         'flaskbb': {
-            'handlers': ['console', 'flaskbb', 'watchtower'],
+            'handlers': ['console', 'flaskbb', 'watchtower'],   #Watchower already added.
             'level': 'INFO',
             'propagate': True
         },
